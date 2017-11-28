@@ -9,6 +9,11 @@ router.get('/', (request, response, next) => {
     .catch( error => next(error) )
 })
 
+router.get('/signup', (request, response) => {
+  response.render("contacts/signup")
+
+})
+
 router.use('/contacts', contactsRoutes);
 
 router.use(middlewares.logErrors);
