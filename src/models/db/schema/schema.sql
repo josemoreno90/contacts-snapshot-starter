@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS contacts, members;
 
 CREATE TABLE members (
   id serial,
-  username varchar(255) NOT NULL,
+  username varchar(255) NOT NULL UNIQUE,
   password varchar(255) NOT NULL,
   role varchar(255) DEFAULT 'regular'
 );

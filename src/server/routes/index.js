@@ -18,8 +18,25 @@ router.get('/signup', (request, response) => {
 router.post('/signup', (request, response) => {
   const member = request.body;
   members.createMember(member)
-  .then(response.render('contacts/login'));
+  .then(response.redirect('/login'));
 })
+
+router.get('/login', (request, response) => {
+  response.render('contacts/login', {"notFound": false})
+})
+
+router.post('/login', (request, response) => {
+  const memberInput = request.body;
+  const notFound = true;
+
+  members.findByUsername(memberInput)
+  .then(function(member) {
+    if(!member || member.password != memberInput.password) {
+      response.render('contacts/login', {notFound})
+    }
+  })
+})
+
 
 
 router.use('/contacts', contactsRoutes);

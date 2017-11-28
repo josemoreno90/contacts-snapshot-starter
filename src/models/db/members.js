@@ -5,4 +5,8 @@ const createMember = function(member){
             , member);
 }
 
-module.exports = {createMember}
+const findByUsername = function(member) {
+  return db.query('SELECT * FROM members WHERE username = $1', member.username)
+}
+
+module.exports = {createMember, findByUsername}
