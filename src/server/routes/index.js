@@ -2,6 +2,7 @@ const router = require('express').Router();
 const contactsRoutes = require('./contacts')
 const contacts = require('../../models/contacts');
 const middlewares = require('../middlewares');
+const members = require('../../models/db/members')
 
 router.get('/', (request, response, next) => {
   contacts.findAll()
@@ -11,8 +12,15 @@ router.get('/', (request, response, next) => {
 
 router.get('/signup', (request, response) => {
   response.render("contacts/signup")
-
 })
+
+
+router.post('/signup', (request, response) => {
+  const member = request.body;
+  members.createMember(member)
+  .then(response.render('contacts/login'));
+})
+
 
 router.use('/contacts', contactsRoutes);
 
