@@ -3,7 +3,11 @@ const contacts = require('../../models/contacts')
 const router = require('express').Router()
 
 router.get('/new', (request, response) => {
-  response.render('contacts/new')
+  if (request.session.role === 'admin') {
+    response.render('contacts/new')
+  } else {
+    response.status(403).send('Error: you don\'t have permission');
+  }
 })
 
 router.post('/', (request, response, next) => {
@@ -29,12 +33,16 @@ router.get('/:contactId', (request, response, next) => {
 
 router.delete('/:contactId', (request, response, next) => {
   const contactId = request.params.contactId
-  contacts.destroy(contactId)
-    .then(function(contact) {
-      if (contact) return response.redirect('/')
-      next()
-    })
-    .catch( error => next(error) )
+  if(request.session.role === 'admin'){
+    contacts.destroy(contactId)
+      .then(function(contact) {
+        if (contact) return response.redirect('/')
+        next()
+      })
+      .catch( error => next(error) )
+    } else {
+      response.status(403).send('Error: you don\'t have permission');
+    }
 })
 
 router.get('/search', (request, response, next) => {

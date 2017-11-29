@@ -8,7 +8,7 @@ const bcrypt = require('../../controller/index')
 router.get('/', (request, response, next) => {
   if(request.session.loggedin){
     contacts.findAll()
-      .then((contacts) => {response.render('contacts/index', { contacts })})
+      .then((contacts) => {response.render('contacts/index', { contacts, role:request.session.role })})
       .catch( error => next(error));
     } else {
       response.redirect('/login');
@@ -43,6 +43,7 @@ router.post('/login', (request, response) => {
         response.render('contacts/login', {notFound})
       } else {
         request.session.loggedin = true;
+        request.session.role = member[0].role;
         response.redirect('/');
       }
     }).catch(console.log);
