@@ -21,11 +21,11 @@ router.get('/signup', (request, response) => {
 
 
 router.post('/signup', (request, response) => {
-  const {password, username} = request.body;
-
+  const {password, username, role} = request.body;
+  const admin = role === 'on' ? true : false;
   bcrypt
     .hashPassword(password)
-    .then(hashPass => members.create(username, hashPass[0], hashPass[1])) // save hashed password and salt
+    .then(hashPass => members.create(username, hashPass[0], hashPass[1], admin)) // save hashed password and salt
     .then(() => response.redirect('/login'));
 })
 
