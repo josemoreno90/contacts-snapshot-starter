@@ -18,6 +18,8 @@ app.use(methodOverride('_method'))
 
 app.use(middlewares.setDefaultResponseLocals)
 
+app.use(session({ secret: 'secret', saveUninitialized: false, resave: true }));
+
 app.use('/', routes)
 
 app.use((request, response) => {
