@@ -6,9 +6,13 @@ const members = require('../../models/db/members')
 const bcrypt = require('../../controller/index')
 
 router.get('/', (request, response, next) => {
-  contacts.findAll()
-    .then((contacts) => {response.render('contacts/index', { contacts })})
-    .catch( error => next(error) )
+  if(request.session.loggedin){
+    contacts.findAll()
+      .then((contacts) => {response.render('contacts/index', { contacts })})
+      .catch( error => next(error));
+    } else {
+      response.redirect('/login');
+    }
 })
 
 router.get('/signup', (request, response) => {
@@ -39,6 +43,7 @@ router.post('/login', (request, response) => {
       if(!member || member[0].password != pw) {
         response.render('contacts/login', {notFound})
       } else {
+        request.session.loggedin = true;
         response.redirect('/');
       }
     })
