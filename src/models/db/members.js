@@ -1,7 +1,7 @@
 const db = require('./db')
 
-const create = function(member, password){
-  return db.query('INSERT INTO members (username, password) VALUES ($1, $2)', [member, password]);
+const create = function(member, password, salt){
+  return db.query('INSERT INTO members (username, password, salt) VALUES ($1, $2, $3)', [member, password, salt]);
 }
 
 const findByUsername = function(username) {

@@ -25,7 +25,7 @@ router.post('/signup', (request, response) => {
 
   bcrypt
     .hashPassword(password)
-    .then(hashPass => members.create(username, hashPass))
+    .then(hashPass => members.create(username, hashPass[0], hashPass[1])) // save hashed password and salt
     .then(() => response.redirect('/login'));
 })
 
@@ -36,17 +36,16 @@ router.get('/login', (request, response) => {
 router.post('/login', (request, response) => {
   const memberInput = request.body;
   const notFound = true;
-  console.log(memberInput.username)
   members.findByUsername(memberInput.username)
   .then(function(member) {
-    bcrypt.hashPassword(memberInput.password).then((pw) => {
+    bcrypt.checkHash(memberInput.password, member[0].salt).then((pw) => {
       if(!member || member[0].password != pw) {
         response.render('contacts/login', {notFound})
       } else {
         request.session.loggedin = true;
         response.redirect('/');
       }
-    })
+    }).catch(console.log);
 
   })
 })
