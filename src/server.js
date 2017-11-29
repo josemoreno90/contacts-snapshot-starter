@@ -4,6 +4,9 @@ const app = express()
 const methodOverride = require('method-override')
 const routes = require('./server/routes');
 const middlewares = require('./server/middlewares');
+const session = require('express-session')
+
+
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views')

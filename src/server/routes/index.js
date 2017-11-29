@@ -3,6 +3,7 @@ const contactsRoutes = require('./contacts')
 const contacts = require('../../models/contacts');
 const middlewares = require('../middlewares');
 const members = require('../../models/db/members')
+const bcrypt = require('../../controller/index')
 
 router.get('/', (request, response, next) => {
   contacts.findAll()
@@ -16,9 +17,12 @@ router.get('/signup', (request, response) => {
 
 
 router.post('/signup', (request, response) => {
-  const member = request.body;
-  members.createMember(member)
-  .then(response.redirect('/login'));
+  const {password, username} = request.body;
+
+  bcrypt
+    .hashPassword(password)
+    .then(hashPass => members.create(username, hashPass))
+    .then(() => response.redirect('/login'));
 })
 
 router.get('/login', (request, response) => {
@@ -28,12 +32,17 @@ router.get('/login', (request, response) => {
 router.post('/login', (request, response) => {
   const memberInput = request.body;
   const notFound = true;
-
-  members.findByUsername(memberInput)
+  console.log(memberInput.username)
+  members.findByUsername(memberInput.username)
   .then(function(member) {
-    if(!member || member.password != memberInput.password) {
-      response.render('contacts/login', {notFound})
-    }
+    bcrypt.hashPassword(memberInput.password).then((pw) => {
+      if(!member || member[0].password != pw) {
+        response.render('contacts/login', {notFound})
+      } else {
+        response.redirect('/');
+      }
+    })
+
   })
 })
 
