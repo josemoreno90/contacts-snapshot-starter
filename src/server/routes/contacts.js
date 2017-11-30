@@ -17,7 +17,7 @@ router.post('/', (request, response, next) => {
       next()
     })
     .catch( error => next(error) )
-})
+});
 
 router.get('/:contactId', (request, response, next) => {
   const contactId = request.params.contactId
