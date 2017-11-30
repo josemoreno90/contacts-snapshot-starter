@@ -53,7 +53,13 @@ router.post('/login', (request, response) => {
 
 
 
-router.use('/contacts', contactsRoutes);
+router.use('/contacts', (req, res, next) => {
+if(req.session.loggedin){
+  contactsRoutes(req, res, next);
+} else {
+  res.redirect('/login');
+}
+});
 
 router.use(middlewares.logErrors);
 router.use(middlewares.errorHandler);

@@ -24,7 +24,7 @@ router.get('/:contactId', (request, response, next) => {
   if (!contactId || !/^\d+$/.test(contactId)) return next()
   contacts.findById(contactId)
     .then(function(contact) {
-      if (contact) return response.render('contacts/show', { contact })
+      if (contact) return response.render('contacts/show', { contact, role:request.session.role })
       next()
     })
     .catch( error => next(error) )
