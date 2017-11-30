@@ -52,11 +52,8 @@ router.post('/login', (request, response) => {
 })
 
 router.get('/logout', (request, response, next) => {
-  console.log('in logout route');
-  request.session.role = undefined;
-  request.session.loggedin = false;
+  request.session.destroy(e=>console.error);
   response.redirect('/login');
-
 });
 
 
