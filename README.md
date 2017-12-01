@@ -1,4 +1,4 @@
-# Contacts Snapshot starter project
+# Auth Snapshot Simple (444)
 
 ## Dev Setup
 
@@ -6,3 +6,6 @@
 1. Load your database with the schema: `npm run load_schema`
 1. Install your dependencies: `npm install`
 1. Run the server: `nodemon`
+1. Go to localhost:3000
+
+### By Jose Moreno and Celeste De Santiago
