@@ -1,0 +1,15 @@
+<h1>Login</h1>
+<% if(notFound) {  %>
+<div id="notFoundMessage"><h3>Invalid username or password</h3></div>
+<% } %>
+<form method="post" action="/login">
+  <label>
+    <span>Username:</span>
+    <input type="text" name="username" />
+  </label>
+  <label>
+    <span>Password:</span>
+    <input type="password" name="password" />
+  </label>
+  <input type="submit" value="Login">
+</form>
